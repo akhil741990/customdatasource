@@ -16,15 +16,23 @@ class DefaultSource extends RelationProvider with SchemaRelationProvider{
   
   override def createRelation(sqlContext: SQLContext, parameters: Map[String,String], schema : StructType) :  BaseRelation = {
    
-    val path = parameters.get("path")
+    val path = show(parameters.get("path"))
     
+    
+    println(path)
     
     if (path!=null){
-      new CustomDataSourceRelation(sqlContext,path.toString(),schema)
+      //new CustomDataSourceRelation(sqlContext,"/home/akhil/devTools/soul/custom-datasource/customdatasource/data/",schema)
+      new CustomDataSourceRelation(sqlContext,path,schema)
     }else{
       throw new IllegalArgumentException("Path must be passed for Custom DataSource")
     }
      
   }
+  
+  def show(x: Option[String]) = x match {
+      case Some(s) => s
+      case None => "?"
+   }
   
 }
